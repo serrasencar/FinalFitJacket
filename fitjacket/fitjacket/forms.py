@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import UserProfile
 
 SKILL_LEVEL_CHOICES = [
     ('beginner', 'Beginner'),
@@ -15,6 +16,16 @@ GOAL_CHOICES = [
     ('flexibility', 'Flexibility'),
     ('general_fitness', 'General Fitness'),
 ]
+
+class ProfileUpdateForm(forms.ModelForm):
+    skill_level = forms.ChoiceField(choices=SKILL_LEVEL_CHOICES)
+    goals = forms.MultipleChoiceField(
+        choices=GOAL_CHOICES,
+        widget=forms.CheckboxSelectMultiple)
+
+    class Meta:
+        model = UserProfile
+        fields = ['skill_level', 'goals']
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)

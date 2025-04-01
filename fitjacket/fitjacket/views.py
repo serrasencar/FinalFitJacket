@@ -1,13 +1,29 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from .forms import ProfileUpdateForm
+from django.contrib.auth.models import User
 from .forms import RegistrationForm
 from .models import UserProfile
 from django.contrib import messages
 def index(request):
     template_data = {}
     template_data['title'] = 'FitJacket'
-    return render(request, 'index.html', {'template_data': template_data})
+    if request.user.is_authenticated:
+        user = request.user
+        profile = user.userprofile  # assumes OneToOneField to User
+
+        context = {
+            'template_data': template_data,
+            'first_name': user.first_name,
+            'skill_level': profile.skill_level,
+            'goals': profile.goals,
+        }
+        return render(request, 'index.html', context)
+
+    else:
+        return render(request, 'index.html', {'template_data': template_data})
 
 def about(request):
     template_data = {}
@@ -48,6 +64,24 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'auth/login.html', {'form': form})
 
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+@login_required
+def edit_profile(request):
+    profile = request.user.userprofile
+
+    if request.method == 'POST':
+        p_form = ProfileUpdateForm(request.POST, instance=profile)
+
+        if p_form.is_valid():
+            p_form.save()
+            return redirect('index')  # or wherever you want to go after saving
+    else:
+        p_form = ProfileUpdateForm(instance=profile)
+
+    return render(request, 'auth/edit_profile.html', {
+        'p_form': p_form,
+    })

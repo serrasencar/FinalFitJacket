@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-white p-6 mt-10 rounded shadow">
+  <h2 class="text-2xl font-bold mb-4">Edit Your Profile</h2>
+
+  <form method="POST">
+      {% if form.errors %}
+  <div class="mb-4 text-red-600 text-sm">
+    <ul>
+      {% for field in form %}
+        {% for error in field.errors %}
+          <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+    {% csrf_token %}
+
+   <div class="mb-4">
+    <label class="block font-medium">Skill Level</label>
+    {{ p_form.skill_level|add_class:"w-full p-2 border rounded" }}
+  </div>
+
+  <!-- Goals Checklist -->
+  <div class="mb-4">
+    <label class="block font-medium mb-2">Your Fitness Goals</label>
+    {{ p_form.goals }}
+  </div>
+
+
+    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save Changes</button>
+  </form>
+</div>
+{% endblock %}

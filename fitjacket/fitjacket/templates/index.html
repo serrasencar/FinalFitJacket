@@ -2,7 +2,40 @@
 {% block title %}Home - FitJacket{% endblock %}
 
 {% block content %}
-<h2 class="text-2xl font-bold mb-4">Welcome to FitJacket</h2>
-<p class="mb-4">Track your workouts, connect with others, and reach your fitness goals with AI-powered recommendations.</p>
-<a href="{% url 'login' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Get Started</a>
+    {% if user.is_authenticated %}
+        <div class="flex space-x-4">
+            <div class="w-1/2 p-4 rounded">
+                <h2 class="text-2xl font-bold mb-4">Hi {{ request.user.first_name }}!</h2>
+                <h2 class="font-bold mb-4"> Welcome Back :)</h2>
+
+                <p class="mb-2">
+                  <strong>Skill Level:</strong> {{ skill_level|capfirst }}
+                </p>
+
+              <p class="mb-2">
+                <strong>Fitness Goals:</strong>
+                {% for goal in goals %}
+                  <span class="inline-block bg-gray-200 text-sm px-2 py-1 rounded mr-1">{{ goal|capfirst }}</span>
+                {% empty %}
+                  <span>No goals set.</span>
+                {% endfor %}
+              </p>
+             <br>
+            <a href="{% url 'edit_profile' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Edit Your Fitness Profile</a>
+
+            </div>
+
+            <div class="w-1/2 p-4 bg-blue-200 rounded">
+                <h2 class="text-2xl font-bold mb-4">Statistics </h2>
+                <p>insert graphs here**</p>
+            </div>
+        </div>
+
+    {% else %}
+        <h2 class="text-2xl font-bold mb-4">Welcome to FitJacket!</h2>
+        <p class="mb-4">Track your workouts, connect with others, and reach your fitness goals with AI-powered recommendations.</p>
+        <br>
+        <a href="{% url 'login' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Get Started</a>
+    {% endif %}
+
 {% endblock %}
