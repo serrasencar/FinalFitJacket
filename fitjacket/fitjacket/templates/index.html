@@ -35,7 +35,9 @@
         <h2 class="text-2xl font-bold mb-4">Welcome to FitJacket!</h2>
         <p class="mb-4">Track your workouts, connect with others, and reach your fitness goals with AI-powered recommendations.</p>
         <br>
-        <a href="{% url 'login' %}" class="bg-blue-600 text-white p-6 rounded hover:bg-blue-700">Get Started</a>
+        <a href="{% url 'login' %}" class="bg-blue-50 text-blue-600 text-xl p-6 rounded group overflow-hidden inline-block relative">
+            <span class="absolute left-0 top-0 h-full w-0 transition-all duration-200 ease-out transform bg-blue-600 group-hover:w-full opacity-90"></span>
+            <span class="relative group-hover:text-white">Get Started</span></a>
     {% endif %}
 
 {% endblock %}
