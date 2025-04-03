@@ -40,7 +40,10 @@
       Login
     </button>
   </form>
-
+    
+    <p class="text-sm mt-4 text-center">
+      <a href="{% url 'password_reset' %}" class="text-blue-600 hover:underline">Forgot password?</a>
+    </p>
   <p class="mt-4 text-sm text-center">
     Don't have an account?
     <a href="{% url 'register' %}" class="text-blue-600 hover:underline">Register here</a>
