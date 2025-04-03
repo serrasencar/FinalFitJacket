@@ -3,11 +3,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import ProfileUpdateForm
+from .forms import ProfileUpdateForm, GOAL_CHOICES
 from django.contrib.auth.models import User
 from .forms import RegistrationForm
 from .models import UserProfile
 from django.contrib import messages
+
+GOAL_CHOICES = {
+    'weight_loss': 'Weight Loss',
+    'muscle_gain': 'Muscle Gain',
+    'endurance': 'Endurance',
+    'flexibility': 'Flexibility',
+    'general_fitness': 'General Fitness',
+} #dictionary for goal choices for home page
+
 def index(request):
     template_data = {}
     template_data['title'] = 'FitJacket'
@@ -19,7 +28,7 @@ def index(request):
             'template_data': template_data,
             'first_name': user.first_name,
             'skill_level': profile.skill_level,
-            'goals': profile.goals,
+            'goals': [GOAL_CHOICES.get(goal, goal) for goal in profile.goals],
         }
         return render(request, 'index.html', context)
 
