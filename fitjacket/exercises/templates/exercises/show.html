@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}{{ exercise.name }} - FitJacket{% endblock %}
+{% block content %}
+
+  <!-- Exercise Title -->
+  <h2 class="text-2xl font-bold mb-4">{{ exercise.name }}</h2>
+
+  <!-- Badges Row -->
+  <div class="mb-4 flex flex-wrap items-center gap-2">
+    {% if exercise.level %}
+      <span class="inline-block bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm">
+        {{ exercise.level|title }}
+      </span>
+    {% endif %}
+    {% if exercise.category %}
+      <span class="inline-block bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm">
+        {{ exercise.category|title }}
+      </span>
+    {% endif %}
+    {% if exercise.equipment %}
+      <span class="inline-block bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm">
+        {{ exercise.equipment|title }}
+      </span>
+    {% endif %}
+    {% for muscle in exercise.primaryMuscles %}
+      <span class="inline-block bg-gray-200 text-gray-800 rounded-full px-3 py-1 text-sm">
+        {{ muscle|title }}
+      </span>
+    {% endfor %}
+  </div>
+
+  <!-- Instructions -->
+  <h5 class="text-lg font-semibold mb-2">Instructions:</h5>
+  {% if exercise.instructions %}
+    <ul class="mb-4 list-disc list-inside">
+      {% for step in exercise.instructions %}
+        <li class="mb-1">{{ step }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No instructions available.</p>
+  {% endif %}
+
+  <!-- Images -->
+  <h5 class="text-lg font-semibold mb-2">Images:</h5>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {% for img in exercise.image_urls %}
+      <div>
+        <img src="{{ img }}"
+             class="w-full h-auto rounded border"
+             alt="{{ exercise.name }}"
+             onerror="this.onerror=null; this.src='/static/default-exercise.jpg';">
+      </div>
+    {% empty %}
+      <p>No images available.</p>
+    {% endfor %}
+  </div>
+
+{% endblock %}
