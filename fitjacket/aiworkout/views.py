@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 import google.generativeai as genai
 from django.contrib import messages
 
-genai.configure(api_key="AIzaSyCDKXnmEsoD-4rfV6rvGDdcToG_uOiASZY")
+genai.configure(api_key="AIzaSyBAmv5GXvEg_kfmebYxy235r8zWLLvDGtY")
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 
