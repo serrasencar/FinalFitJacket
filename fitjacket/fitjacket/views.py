@@ -10,11 +10,12 @@ from .models import UserProfile
 from django.contrib import messages
 
 GOAL_CHOICES = {
-    'weight_loss': 'Weight Loss',
-    'muscle_gain': 'Muscle Gain',
-    'endurance': 'Endurance',
-    'flexibility': 'Flexibility',
-    'general_fitness': 'General Fitness',
+    'strength': 'Strength',
+    'cardio': 'Cardio',
+    'stretching': 'Stretching',
+    'plyometrics': 'Plyometrics',
+    'powerlifting': 'Powerlifting',
+    'strongman': 'Strongman',
 } #dictionary for goal choices for home page
 
 def index(request):
