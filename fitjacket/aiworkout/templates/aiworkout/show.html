@@ -1,7 +1,34 @@
 {% extends "base.html" %}
-{% block title %}AI Workout - FitJacket{% endblock %}
+{% block title %}AI Workout | FitJacket{% endblock %}
+
 {% block content %}
+<div class="text-center">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">💪 Generate Your Personalized Workout</h2>
 
-<h1>This is your AI suggested workout</h1>
+  <form method="POST" class="mb-8">
+    {% csrf_token %}
+    <button type="submit"
+            class="bg-blue-600 hover:bg-blue-700 transition-colors duration-300 text-white font-bold py-3 px-6 rounded-full text-lg shadow-md">
+      Generate Personalized Workout
+    </button>
+  </form>
 
+  {% if workout_plan %}
+  <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-md max-w-5xl mx-auto text-left">
+    <h3 class="text-xl font-semibold text-blue-800 mb-4">Workout Plan:</h3>
+    <div class="whitespace-pre-wrap text-gray-700 leading-relaxed mb-6">
+      {{ workout_plan }}
+    </div>
+
+    <!-- ✅ Workout Completed Button -->
+    <form method="POST" action="{% url 'workout-completed' %}">
+      {% csrf_token %}
+      <button type="submit"
+              class="bg-green-600 hover:bg-green-700 transition-colors duration-300 text-white font-semibold py-2 px-5 rounded-full shadow">
+        ✅ Workout Completed
+      </button>
+    </form>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}
