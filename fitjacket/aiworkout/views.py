@@ -2,8 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 import google.generativeai as genai
 from django.contrib import messages
+import os
+from dotenv import load_dotenv
 
-genai.configure(api_key="AIzaSyBAmv5GXvEg_kfmebYxy235r8zWLLvDGtY")
+load_dotenv()  # Loads .env file
+
+api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 
