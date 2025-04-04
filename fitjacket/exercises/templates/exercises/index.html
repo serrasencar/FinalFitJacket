@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Exercise Library - FitJacket{% endblock %}
+{% block content %}
+
+  <h2 class="text-2xl font-bold mb-6">Exercise Library</h2>
+
+  <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <!-- Filters -->
+    <div class="md:col-span-1 space-y-6">
+      <!-- Search -->
+      <div>
+        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+        <input type="text" name="search" id="search" value="{{ search_query }}"
+               class="w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <!-- Category Filter -->
+<div>
+  <h6 class="font-semibold mb-2">Category</h6>
+  <div class="flex flex-wrap gap-2">
+    {% for cat in categories_list %}
+        <div class="inline-flex items-center">
+      <input type="checkbox" name="category[]" value="{{ cat }}" id="cat-{{ forloop.counter }}"
+       class="hidden peer" {% if cat in selected_categories %}checked{% endif %}>
+
+        <label for="cat-{{ forloop.counter }}"
+               class="cursor-pointer px-3 py-1 rounded-full border text-sm peer-checked:bg-[#5EB6F5] peer-checked:text-white transition">
+          {{ cat|title }}
+        </label>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+
+      <!-- Level Filter -->
+      <div>
+        <h6 class="font-semibold mb-2">Level</h6>
+        <div class="flex flex-wrap gap-2">
+          {% for level in levels_list %}
+           <div class="inline-flex items-center">
+            <input type="checkbox" name="level" value="{{ level }}" id="level-{{ forloop.counter }}"
+                   class="hidden peer" {% if level in selected_levels %}checked{% endif %}>
+            <label for="level-{{ forloop.counter }}"
+                   class="cursor-pointer px-3 py-1 rounded-full border text-sm peer-checked:bg-[#5EB6F5] peer-checked:text-white transition">
+              {{ level|title }}
+            </label>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Apply Button -->
+      <div>
+        <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition font-semibold text-sm">
+          Apply Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Exercise Cards -->
+    <div class="md:col-span-3">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for ex in exercises %}
+          <a href="{% url 'exercise-detail' ex.id %}" class="block bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
+            <div class="w-full h-48 bg-gray-100 overflow-hidden">
+              <img src="{{ ex.image_url|default:'/static/default-exercise.jpg' }}"
+                   alt="{{ ex.name }}"
+                   onerror="this.src='/static/default-exercise.jpg';"
+                   class="w-full h-full object-cover">
+            </div>
+            <div class="p-4">
+              <h5 class="font-semibold text-lg mb-1">{{ ex.name }}</h5>
+              <p class="text-sm text-gray-600"><strong>Level:</strong> {{ ex.level|default:"N/A"|title }}</p>
+              <p class="text-sm text-gray-600"><strong>Category:</strong> {{ ex.category|default:"N/A"|title }}</p>
+            </div>
+          </a>
+        {% empty %}
+          <p class="col-span-full text-center text-gray-500">No exercises found matching your filters.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </form>
+
+{% endblock %}

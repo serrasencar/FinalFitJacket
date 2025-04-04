@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'fitjacket',
+    'exercises',
+    'aiworkout',
+    'friends',
     'widget_tweaks',
 ]
 

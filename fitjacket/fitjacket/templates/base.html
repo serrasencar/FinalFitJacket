@@ -18,6 +18,11 @@
 
     <a href="{% url 'index' %}" class="nav-link">Home</a>
     <a href="{% url 'about' %}" class="nav-link">About</a>
+    <a href="{% url 'exercise-list' %}" class="nav-link">Exercises</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'aiworkout' %}" class="nav-link">AI Workout</a>
+        <a href="{% url 'friends' %}" class="nav-link">Friends</a>
+    {% endif %}
 
   <!-- Divider and Auth links -->
     <!-- Vertical line aligned with text -->
@@ -35,7 +40,9 @@
   </header>
 
   <main class="p-8 flex-grow">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     {% block content %}{% endblock %}
+  </div>
   </main>
 
   <footer class="bg-gray-100 p-4 text-center text-sm text-gray-600">
