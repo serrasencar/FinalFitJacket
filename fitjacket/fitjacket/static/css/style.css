@@ -26,17 +26,16 @@ h1.text-xl {
     background-color: #ABDAFC !important;
 }
 
-button.bg-blue-600, a.bg-blue-600, button.bg-blue-50, a.bg-blue-50  {
+button.bg-blue-600, a.bg-blue-600, button.bg-blue-50, a.bg-blue-50 {
     padding: 0.5rem 1rem;
     border-radius: 9999px;
     border: none;
 }
- .peer-checked:bg-blue-600
 
-button.bg-blue-600:hover, a.bg-blue-600:hover {
-    background-color: #76C6FF !important;
-
+.bg-blue-600:hover{
+    background-color: #ABDAFC !important;
 }
+
 .text-gray-400 {
     color: #464655 !important;
     font-family: 'Tilson', sans-serif !important;

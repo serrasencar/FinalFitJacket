@@ -19,7 +19,7 @@
   <div class="flex flex-wrap gap-2">
     {% for cat in categories_list %}
         <div class="inline-flex items-center">
-      <input type="checkbox" name="category[]" value="{{ cat }}" id="cat-{{ forloop.counter }}"
+      <input type="checkbox" name="category" value="{{ cat }}" id="cat-{{ forloop.counter }}"
        class="hidden peer" {% if cat in selected_categories %}checked{% endif %}>
 
         <label for="cat-{{ forloop.counter }}"
