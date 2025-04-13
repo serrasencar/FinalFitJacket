@@ -6,15 +6,16 @@ from .models import UserProfile
 SKILL_LEVEL_CHOICES = [
     ('beginner', 'Beginner'),
     ('intermediate', 'Intermediate'),
-    ('advanced', 'Advanced'),
+    ('advanced', 'Expert'),
 ]
 
 GOAL_CHOICES = [
-    ('weight_loss', 'Weight Loss'),
-    ('muscle_gain', 'Muscle Gain'),
-    ('endurance', 'Endurance'),
-    ('flexibility', 'Flexibility'),
-    ('general_fitness', 'General Fitness'),
+    ( 'strength',  'Strength'),
+    ('cardio', 'Cardio'),
+    ('stretching', 'Stretching'),
+    ('plyometrics', 'Plyometrics'),
+    ('strongman', 'Strongman'),
+
 ]
 
 class ProfileUpdateForm(forms.ModelForm):
