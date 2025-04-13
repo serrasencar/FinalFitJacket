@@ -22,7 +22,7 @@ def index(request):
     template_data['title'] = 'FitJacket'
     if request.user.is_authenticated:
         user = request.user
-        profile = user.userprofile  # assumes OneToOneField to User
+        profile, created = UserProfile.objects.get_or_create(user=user)
 
         context = {
             'template_data': template_data,

@@ -32,7 +32,7 @@ button.bg-blue-600, a.bg-blue-600, button.bg-blue-50, a.bg-blue-50 {
     border: none;
 }
 
-.bg-blue-600:hover{
+a.bg-blue-600:hover, button.bg-blue-600:hover {
     background-color: #ABDAFC !important;
 }
 
@@ -44,6 +44,10 @@ button.bg-blue-600, a.bg-blue-600, button.bg-blue-50, a.bg-blue-50 {
 .nav-link {
     color: white;
     font-size: 18px;
+}
+
+.link1:hover {
+    color: #ABDAFC !important;
 }
 
 .nav-link:hover {

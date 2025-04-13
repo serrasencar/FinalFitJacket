@@ -61,7 +61,7 @@
     <div class="md:col-span-3">
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for ex in exercises %}
-          <a href="{% url 'exercise-detail' ex.id %}" class="block bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
+          <a href="{% url 'exercise-detail' ex.id %}" class="block bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
             <div class="w-full h-48 bg-gray-100 overflow-hidden">
               <img src="{{ ex.image_url|default:'/static/default-exercise.jpg' }}"
                    alt="{{ ex.name }}"

@@ -1,7 +1,38 @@
 {% extends "base.html" %}
 {% block title %}Friends - FitJacket{% endblock %}
+
 {% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
 
-<h1>Welcome to the Friends Page</h1>
+  <!-- Top Bar: Find Friends Button -->
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">Your Friends</h1>
+    <a href="{% url 'search_friends' %}"
+       class="relative inline-block px-6 py-3 font-medium text-blue-600 bg-blue-50 rounded group overflow-hidden">
+      <span class="absolute left-0 top-0 h-full w-0 transition-all duration-300 ease-out transform bg-blue-600 group-hover:w-full opacity-90"></span>
+      <span class="relative z-10 group-hover:text-white">Find Friends</span>
+    </a>
+  </div>
 
+  <!-- Friends List -->
+  {% if friends %}
+    <ul class="space-y-4">
+      {% for friend in friends %}
+        <li class="flex items-center justify-between bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition">
+          <div class="flex gap-3 items-center">
+              <p class="text-lg font-semibold">{{ friend.username }}
+                  <p class="text-lg"> - {{ friend.first_name }} {{ friend.last_name }} </p>
+          </div>
+          <a href="{% url 'remove_friend' friend.id %}"
+             class="link1 text-blue-600 text-sm font-medium">
+            Remove Friend
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-500 italic">You don't have any friends yet.</p>
+  {% endif %}
+
+</div>
 {% endblock %}
