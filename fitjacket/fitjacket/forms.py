@@ -3,24 +3,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
 
+
 SKILL_LEVEL_CHOICES = [
     ('beginner', 'Beginner'),
     ('intermediate', 'Intermediate'),
-    ('advanced', 'Advanced'),
+    ('advanced', 'Expert'),
 ]
 
 GOAL_CHOICES = [
-    ('weight_loss', 'Weight Loss'),
-    ('muscle_gain', 'Muscle Gain'),
-    ('endurance', 'Endurance'),
-    ('flexibility', 'Flexibility'),
-    ('general_fitness', 'General Fitness'),
+    ( 'strength',  'Strength'),
+    ('cardio', 'Cardio'),
+    ('stretching', 'Stretching'),
+    ('plyometrics', 'Plyometrics'),
+    ('strongman', 'Strongman'),
 ]
-
-class WorkoutForm(forms.ModelForm):
-    class Meta:
-        model = Workout
-        fields = ['date', 'exercise_type', 'duration', 'calories_burned', 'reps', 'sets']
         
 class ProfileUpdateForm(forms.ModelForm):
     skill_level = forms.ChoiceField(choices=SKILL_LEVEL_CHOICES)
