@@ -24,10 +24,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
+    path('signup/', views.register_view, name='register'),
     path('exercises/', include('exercises.urls')),
     path('friends/', include('friends.urls')),
     path('aiworkout/', include('aiworkout.urls')),
-    path('signup/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path(

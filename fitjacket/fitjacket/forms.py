@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
 
+
 SKILL_LEVEL_CHOICES = [
     ('beginner', 'Beginner'),
     ('intermediate', 'Intermediate'),
@@ -15,9 +16,8 @@ GOAL_CHOICES = [
     ('stretching', 'Stretching'),
     ('plyometrics', 'Plyometrics'),
     ('strongman', 'Strongman'),
-
 ]
-
+        
 class ProfileUpdateForm(forms.ModelForm):
     skill_level = forms.ChoiceField(choices=SKILL_LEVEL_CHOICES)
     goals = forms.MultipleChoiceField(

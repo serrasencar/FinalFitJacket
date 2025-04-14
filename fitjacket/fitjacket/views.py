@@ -9,6 +9,7 @@ from .forms import RegistrationForm
 from .models import UserProfile
 from django.contrib import messages
 
+# Goal choices for home display
 GOAL_CHOICES = {
     'strength': 'Strength',
     'cardio': 'Cardio',
@@ -16,11 +17,12 @@ GOAL_CHOICES = {
     'plyometrics': 'Plyometrics',
     'powerlifting': 'Powerlifting',
     'strongman': 'Strongman',
-} #dictionary for goal choices for home page
+}
 
 def index(request):
     template_data = {}
     template_data['title'] = 'FitJacket'
+
     if request.user.is_authenticated:
         user = request.user
         profile, created = UserProfile.objects.get_or_create(user=user)
@@ -32,45 +34,35 @@ def index(request):
             'goals': [GOAL_CHOICES.get(goal, goal) for goal in profile.goals],
         }
         return render(request, 'index.html', context)
-
+    
     else:
         return render(request, 'index.html', {'template_data': template_data})
 
 def about(request):
-    template_data = {}
-    template_data['title'] = 'About'
-    return render(request, 'about.html', {'template_data': template_data})
+     template_data = {}
+     template_data['title'] = 'About'
+     return render(request, 'about.html', {'template_data': template_data})
 
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-
         if form.is_valid():
-            user = form.save() #uses django's default model to store username and password
-            skill_level = form.cleaned_data.get('skill_level')
-            goals = form.cleaned_data.get('goals')
-
-            # Create the profile
-            UserProfile.objects.create( #uses customized userprofile model otherwise
-                user=user,
-                skill_level=skill_level,
-                goals=goals
-            )
-
+            user = form.save()
+            skill_level=form.cleaned_data.get('skill_level'),
+            goals=form.cleaned_data.get('goals')
             messages.success(request, "Account created! You can now log in.")
             return redirect('login')
     else:
         form = RegistrationForm()
+        
     return render(request, 'auth/register.html', {'form': form})
 
-# LOGIN VIEW
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('index')  # You can change this to your homepage or dashboard
+            login(request, form.get_user())
+            return redirect('index')
     else:
         form = AuthenticationForm()
     return render(request, 'auth/login.html', {'form': form})
@@ -83,16 +75,14 @@ def logout_view(request):
 @login_required
 def edit_profile(request):
     profile = request.user.userprofile
-
     if request.method == 'POST':
-        p_form = ProfileUpdateForm(request.POST, instance=profile)
-
-        if p_form.is_valid():
-            p_form.save()
-            return redirect('index')  # or wherever you want to go after saving
+        form = ProfileUpdateForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect('index')
     else:
-        p_form = ProfileUpdateForm(instance=profile)
+        form = ProfileUpdateForm(instance=profile)
 
-    return render(request, 'auth/edit_profile.html', {
-        'p_form': p_form,
-    })
+    return render(request, 'auth/edit_profile.html', {'p_form': form})
+
