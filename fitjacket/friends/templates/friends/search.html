@@ -38,9 +38,9 @@
             <div>
               <p class="font-semibold text-lg">{{ user.username }}</p>
             </div>
-            <a href="{% url 'add_friend' user.id %}"
+            <a href="{% url 'send_request' user.id %}"
                class="link1 text-blue-600 text-sm font-medium">
-              Add Friend
+              Request
             </a>
           </li>
         {% endfor %}

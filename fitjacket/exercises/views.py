@@ -30,7 +30,6 @@ def exercise_list(request):
     # Predefined filter options
     categories_list = ['strength', 'cardio', 'stretching', 'plyometrics', 'powerlifting', 'strongman']
     levels_list = ['beginner', 'intermediate', 'expert']
-    print("Selected categories:", categories)
 
     return render(request, 'exercises/index.html', {
         'exercises': exercises,
