@@ -17,17 +17,16 @@ Including another URLconf
 
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.index, name='index'),
     path('about/', views.about, name='about'),
-    path('exercises/', include('exercises.urls')),
-    path('friends/', include('friends.urls')),
-    path('aiworkout/', include('aiworkout.urls')),
     path('signup/', views.register_view, name='register'),
+     path('log/', views.log_workout, name='log_workout'),
+    path('stats/', views.workout_stats, name='workout_stats'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path(
@@ -48,6 +47,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='auth/password_reset/password_reset_complete.html'),
          name='password_reset_complete'),
     path('edit/', views.edit_profile, name='edit_profile'),
-    path('accounts/', include('accounts.urls')),
 
 ]
