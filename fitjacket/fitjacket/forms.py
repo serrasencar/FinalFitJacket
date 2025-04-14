@@ -6,18 +6,22 @@ from .models import UserProfile
 SKILL_LEVEL_CHOICES = [
     ('beginner', 'Beginner'),
     ('intermediate', 'Intermediate'),
-    ('advanced', 'Expert'),
+    ('advanced', 'Advanced'),
 ]
 
 GOAL_CHOICES = [
-    ( 'strength',  'Strength'),
-    ('cardio', 'Cardio'),
-    ('stretching', 'Stretching'),
-    ('plyometrics', 'Plyometrics'),
-    ('strongman', 'Strongman'),
-
+    ('weight_loss', 'Weight Loss'),
+    ('muscle_gain', 'Muscle Gain'),
+    ('endurance', 'Endurance'),
+    ('flexibility', 'Flexibility'),
+    ('general_fitness', 'General Fitness'),
 ]
 
+class WorkoutForm(forms.ModelForm):
+    class Meta:
+        model = Workout
+        fields = ['date', 'exercise_type', 'duration', 'calories_burned', 'reps', 'sets']
+        
 class ProfileUpdateForm(forms.ModelForm):
     skill_level = forms.ChoiceField(choices=SKILL_LEVEL_CHOICES)
     goals = forms.MultipleChoiceField(
