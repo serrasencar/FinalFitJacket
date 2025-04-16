@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Log Workout{% endblock %}
+{% block content %}
+
+<h2 class="text-2xl font-bold mb-4">Log Exercises</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% for form in formset %}
+    <div class="border p-4 rounded bg-gray-50">{{ form.as_p }}</div>
+  {% endfor %}
+  <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 mt-6">
+    Save Exercises
+  </button>
+</form>
+
+{% endblock %}
