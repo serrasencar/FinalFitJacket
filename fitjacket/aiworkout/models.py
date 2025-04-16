@@ -23,4 +23,18 @@ class Badge(models.Model):
     rule_type = models.CharField(max_length=100)  # e.g., 'pushup', 'bench_press'
     threshold = models.PositiveIntegerField()      # e.g., 30 reps
 
+    def __str__(self):
+        return self.name
+    
+class UserBadge(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    badge = models.ForeignKey(Badge, on_delete=models.CASCADE)
+    awarded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'badge')  # One badge per user
+
+    def __str__(self):
+        return f"{self.user.username} - {self.badge.name}"
+
 

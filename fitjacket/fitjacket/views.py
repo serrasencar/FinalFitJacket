@@ -10,6 +10,7 @@ from .forms import RegistrationForm
 from .models import UserProfile
 from django.contrib import messages
 from aiworkout.models import Workout, Badge
+from aiworkout.models import UserBadge, Badge
 
 # Goal choices for home display
 GOAL_CHOICES = {
@@ -46,8 +47,8 @@ def index(request):
             'goals': [GOAL_CHOICES.get(goal, goal) for goal in profile.goals],
             'workouts': workouts,
             'chart_data': chart_data,
-            'badges': profile.badges.all(),         # earned badges
-            'all_badges': Badge.objects.all(),      # show badge rules
+            'badges': UserBadge.objects.filter(user=user),
+            'all_badges': Badge.objects.all(),
         }
         return render(request, 'index.html', context)
 

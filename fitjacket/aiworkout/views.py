@@ -10,6 +10,8 @@ from .forms import WorkoutForm
 from .models import Workout
 from django.forms import formset_factory
 from django.utils.dateparse import parse_date  # Add this import at the top if not already present
+from aiworkout.models import Workout, Badge, UserBadge
+from django.db.models import Sum
 
 
 load_dotenv()  # Loads .env file
@@ -25,13 +27,16 @@ def workout_completed(request):
     return redirect("aiworkout")
 
 def check_and_award_badges(user):
-    from aiworkout.models import Workout, Badge
-    from django.db.models import Sum
-
     for badge in Badge.objects.all():
-        total = Workout.objects.filter(user=user, workout_type__icontains=badge.rule_type).aggregate(Sum('reps'))['reps__sum'] or 0
-        if total >= badge.threshold and badge not in user.userprofile.badges.all():
-            user.userprofile.badges.add(badge)
+        total = Workout.objects.filter(
+            user=user,
+            workout_type__icontains=badge.rule_type
+        ).aggregate(Sum('reps'))['reps__sum'] or 0
+
+        if total >= badge.threshold:
+            already_earned = UserBadge.objects.filter(user=user, badge=badge).exists()
+            if not already_earned:
+                UserBadge.objects.create(user=user, badge=badge)
 
 
 
