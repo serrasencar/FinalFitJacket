@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block title %}Workout Chart{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Your Workout History</h2>
+<div id="chart_div" style="width: 100%; height: 500px;"></div>
+
+<a href="{% url 'log_workout' %}" class="text-blue-600 mt-4 inline-block">← Log More Workouts</a>
+
+<script>
+  const chartData = {
+    columns: [
+      { type: 'string', label: 'Date' },
+      {% for date, workouts in chart_data.items %}
+        {% if forloop.first %}
+          {% for workout_type in workouts %}
+            { type: 'number', label: "{{ workout_type }}" },
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    ],
+    rows: [
+      {% for date, workouts in chart_data.items %}
+        [
+          "{{ date }}",
+          {% for date2, workouts2 in chart_data.items %}
+            {% if forloop.first %}
+              {% for workout_type in workouts2 %}
+                {{ workouts|get_item:workout_type|default:0 }},
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        ],
+      {% endfor %}
+    ]
+  };
+</script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    const data = new google.visualization.DataTable();
+    chartData.columns.forEach(col => data.addColumn(col.type, col.label));
+    data.addRows(chartData.rows);
+
+    const options = {
+      title: 'Workout Reps Over Time',
+      hAxis: { title: 'Date' },
+      vAxis: { title: 'Reps' },
+      legend: { position: 'top' }
+    };
+
+    const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
+{% endblock %}
