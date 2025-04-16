@@ -140,3 +140,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'fitjacket.no.reply@gmail.com'
 EMAIL_HOST_PASSWORD = 'gnku bpif qyjh begd'  # Not your Gmail password!
 DEFAULT_FROM_EMAIL = 'FitJacket <fitjacket.no.reply@gmail.com>'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

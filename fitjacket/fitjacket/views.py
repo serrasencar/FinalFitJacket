@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -8,6 +9,7 @@ from django.contrib.auth.models import User
 from .forms import RegistrationForm
 from .models import UserProfile
 from django.contrib import messages
+from aiworkout.models import Workout, Badge
 
 # Goal choices for home display
 GOAL_CHOICES = {
@@ -20,41 +22,54 @@ GOAL_CHOICES = {
 }
 
 def index(request):
-    template_data = {}
-    template_data['title'] = 'FitJacket'
+    template_data = {'title': 'FitJacket'}
 
     if request.user.is_authenticated:
         user = request.user
-        profile, created = UserProfile.objects.get_or_create(user=user)
+        profile, created = UserProfile.objects.get_or_create(user=user, defaults={'goals': []})
+
+        # Show all past exercises, newest first
+        workouts = Workout.objects.filter(user=user).order_by('-date', '-id')
+
+        # Build chart data structure
+        chart_data = {}
+        for w in workouts:
+            date_str = str(w.date)
+            if date_str not in chart_data:
+                chart_data[date_str] = {}
+            chart_data[date_str][w.workout_type] = chart_data[date_str].get(w.workout_type, 0) + w.reps
 
         context = {
             'template_data': template_data,
             'first_name': user.first_name,
             'skill_level': profile.skill_level,
             'goals': [GOAL_CHOICES.get(goal, goal) for goal in profile.goals],
+            'workouts': workouts,
+            'chart_data': chart_data,
+            'badges': profile.badges.all(),         # earned badges
+            'all_badges': Badge.objects.all(),      # show badge rules
         }
         return render(request, 'index.html', context)
-    
+
     else:
         return render(request, 'index.html', {'template_data': template_data})
 
 def about(request):
-     template_data = {}
-     template_data['title'] = 'About'
-     return render(request, 'about.html', {'template_data': template_data})
+    template_data = {'title': 'About'}
+    return render(request, 'about.html', {'template_data': template_data})
 
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            skill_level=form.cleaned_data.get('skill_level'),
-            goals=form.cleaned_data.get('goals')
+            skill_level = form.cleaned_data.get('skill_level')
+            goals = form.cleaned_data.get('goals')
             messages.success(request, "Account created! You can now log in.")
             return redirect('login')
     else:
         form = RegistrationForm()
-        
+
     return render(request, 'auth/register.html', {'form': form})
 
 def login_view(request):
