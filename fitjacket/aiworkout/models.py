@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 
 class Workout(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     workout_type = models.CharField(max_length=100)  # Exercise name
     sets = models.IntegerField(default=1)
-    reps = models.IntegerField(default=0)
+    reps = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     rest = models.CharField(max_length=50, blank=True)  # "90 seconds"
     equipment = models.CharField(max_length=100, blank=True)
     date = models.DateField()

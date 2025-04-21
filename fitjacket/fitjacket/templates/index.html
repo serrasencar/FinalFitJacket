@@ -29,17 +29,18 @@
         <!-- ✅ Recent Workouts Section -->
         <h3 class="text-xl font-semibold mt-8 mb-2">Recent Workouts</h3>
         <ul class="bg-white shadow-md rounded p-4 space-y-2 text-sm">
-          {% for workout in workouts %}
-            <li class="border-b pb-1">
-              <strong>{{ workout.date }}</strong> — {{ workout.workout_type }}  
-              ({{ workout.sets }} sets × {{ workout.reps }} reps)
-              {% if workout.rest %} | Rest: {{ workout.rest }}{% endif %}
-              {% if workout.equipment %} | Equipment: {{ workout.equipment }}{% endif %}
-            </li>
-          {% empty %}
-            <li>No workouts logged yet.</li>
-          {% endfor %}
+            {% for workout in workouts|slice:":5" %}
+                 <li class="border-b pb-1">
+                     <strong>{{ workout.date }}</strong> — {{ workout.workout_type }}  
+                     ({{ workout.sets }} sets × {{ workout.reps }} reps)
+                     {% if workout.rest %} | Rest: {{ workout.rest }}{% endif %}
+                     {% if workout.equipment %} | Equipment: {{ workout.equipment }}{% endif %}
+                </li>
+            {% empty %}
+                <li>No workouts logged yet.</li>
+            {% endfor %}
         </ul>
+
         
 
         <a href="{% url 'workout_chart' %}" class="mt-4 inline-block text-blue-600 font-medium hover:underline">
@@ -47,42 +48,54 @@
         </a>
       </div>
 
-      <div class="w-full lg:w-1/2 p-4 bg-blue-200 rounded">
+      <div class="w-full lg:w-2/3 p-4 bg-blue-200 rounded" style="max-height: 500px; overflow-y: auto;">
         <h2 class="text-2xl font-bold mb-4">Statistics</h2>
         <div id="chart_div" style="width: 100%; height: 400px;"></div>
 
         {% if chart_data %}
-          <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-          <script>
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
+         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
-              const data = new google.visualization.DataTable();
-              data.addColumn('string', 'Date');
+  function drawChart() {
+    const rawData = {{ chart_data|safe }};
+      
+    const allWorkoutTypes = new Set();
+    for (const workouts of Object.values(rawData)) {
+      for (const type in workouts) {
+        allWorkoutTypes.add(type);
+      }
+    }
+    const workoutTypes = Array.from(allWorkoutTypes).sort();
+      
+    const sortedDates = Object.keys(rawData).sort((a, b) => new Date(a) - new Date(b));
+      
+    const chartRows = sortedDates.map(date => {
+      const row = [date];
+      const workouts = rawData[date];
+      workoutTypes.forEach(type => {
+        row.push(workouts[type] || 0);
+      });
+      return row;
+    });
+      
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    workoutTypes.forEach(type => data.addColumn('number', type));
+    data.addRows(chartRows);
 
-              const workoutTypes = Object.keys({{ chart_data|safe }}[Object.keys({{ chart_data|safe }})[0]]);
-              workoutTypes.forEach(type => data.addColumn('number', type));
+    const options = {
+      title: 'Workout Trends',
+      hAxis: { title: 'Date' },
+      vAxis: { title: 'Reps' },
+      legend: { position: 'top' }
+    };
 
-              const chartRows = [];
-              for (const [date, workouts] of Object.entries({{ chart_data|safe }})) {
-                const row = [date];
-                workoutTypes.forEach(type => row.push(workouts[type] || 0));
-                chartRows.push(row);
-              }
-              data.addRows(chartRows);
-
-              const options = {
-                title: 'Workout Trends',
-                hAxis: { title: 'Date' },
-                vAxis: { title: 'Reps' },
-                legend: { position: 'top' }
-              };
-
-              const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-              chart.draw(data, options);
-            }
-          </script>
+    const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
         {% endif %}
       </div>
     </div>
