@@ -2,16 +2,25 @@ from datetime import date
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 import google.generativeai as genai
-from django.contrib import messages
 import os
 from dotenv import load_dotenv
 import re
 from .forms import WorkoutForm
-from .models import Workout
 from django.forms import formset_factory
 from django.utils.dateparse import parse_date  # Add this import at the top if not already present
 from aiworkout.models import Workout, Badge, UserBadge
 from django.db.models import Sum
+
+@login_required
+def badges_view(request):
+    user = request.user
+    earned = Badge.objects.filter(userbadge__user=user)
+    unearned = Badge.objects.exclude(pk__in=earned.values_list('pk', flat=True))
+
+    return render(request, 'badges.html', {
+        'earned_badges': earned,
+        'unearned_badges': unearned,
+    })
 
 
 load_dotenv()  # Loads .env file

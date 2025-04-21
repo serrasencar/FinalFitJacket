@@ -8,6 +8,6 @@ urlpatterns = [
     path('chart/', views.workout_chart, name='workout_chart'),
     path('completed/', views.workout_completed, name='workout-completed'),
     path('log-bulk/', views.log_bulk_workout, name='log_bulk_workout'),
-
+    path('badges/', views.badges_view, name='badges'),
 
 ]

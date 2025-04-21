@@ -9,8 +9,7 @@ from django.contrib.auth.models import User
 from .forms import RegistrationForm
 from .models import UserProfile
 from django.contrib import messages
-from aiworkout.models import Workout, Badge
-from aiworkout.models import UserBadge, Badge
+from aiworkout.models import Workout, UserBadge, Badge
 
 # Goal choices for home display
 GOAL_CHOICES = {
@@ -27,7 +26,6 @@ def index(request):
 
     if request.user.is_authenticated:
         user = request.user
-        profile, created = UserProfile.objects.get_or_create(user=user, defaults={'goals': []})
 
         # Show all past exercises, newest first
         workouts = Workout.objects.filter(user=user).order_by('-date', '-id')
@@ -42,9 +40,7 @@ def index(request):
 
         context = {
             'template_data': template_data,
-            'first_name': user.first_name,
-            'skill_level': profile.skill_level,
-            'goals': [GOAL_CHOICES.get(goal, goal) for goal in profile.goals],
+            'user' : user,
             'workouts': workouts,
             'chart_data': chart_data,
             'badges': UserBadge.objects.filter(user=user),
@@ -66,6 +62,14 @@ def register_view(request):
             user = form.save()
             skill_level = form.cleaned_data.get('skill_level')
             goals = form.cleaned_data.get('goals')
+
+            # create the profile !!
+            UserProfile.objects.create(
+                user=user,
+                skill_level=skill_level,
+                goals=goals
+            )
+
             messages.success(request, "Account created! You can now log in.")
             return redirect('login')
     else:
@@ -91,6 +95,7 @@ def logout_view(request):
 @login_required
 def edit_profile(request):
     profile = request.user.userprofile
+
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, instance=profile)
         if form.is_valid():
