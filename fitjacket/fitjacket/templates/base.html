@@ -11,22 +11,34 @@
 </head>
 
 <body class="bg-white-50 text-gray-400 min-h-screen flex flex-col">
-  <header class="bg-blue-600 p-6 text-white flex justify-between items-center">
-      <a href="{% url 'index' %}"><h1 class="text-xl font-bold">FitJacket</h1></a>
-    <nav class="space-x-4">
-        <div class="flex items-center space-x-6">
 
+  <header class="relative bg-blue-600 p-6 text-white flex justify-between items-center">
+      <a href="{% url 'index' %}"><h1 class="text-xl font-bold">FitJacket</h1></a>
+
+  <button id="menu-btn" class="block lg:hidden focus:outline-none">
+      <!-- simple hamburger icon -->
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+      <nav id="menu" class="absolute top-full right-0 mt-2
+           w-48 rounded-md bg-blue-600 shadow-lg z-50
+           flex flex-col space-y-2 p-4 hidden
+           lg:static lg:mt-0 lg:shadow-none lg:flex-row lg:flex lg:bg-transparent lg:w-auto lg:p-0 lg:space-y-0 lg:space-x-6">
     <a href="{% url 'index' %}" class="nav-link">Home</a>
     <a href="{% url 'about' %}" class="nav-link">About</a>
     <a href="{% url 'exercise-list' %}" class="nav-link">Exercises</a>
     {% if user.is_authenticated %}
         <a href="{% url 'aiworkout' %}" class="nav-link">AI Workout</a>
+        <a href="{% url 'badges' %}" class="nav-link">Badges</a>
         <a href="{% url 'friends' %}" class="nav-link">Friends</a>
     {% endif %}
 
   <!-- Divider and Auth links -->
     <!-- Vertical line aligned with text -->
-    <div class="h-5 w-px bg-white opacity-70"></div>
+    <div class="hidden lg:block h-5 w-px bg-white opacity-70"></div>
 
       {% if user.is_authenticated %}
       <a href="{% url 'logout' %}" class="nav-link">Logout</a>
@@ -34,10 +46,16 @@
       <a href="{% url 'login' %}" class="nav-link">Login</a>
       <a href="{% url 'register' %}" class="nav-link">Register</a>
     {% endif %}
-    </div>
-
     </nav>
   </header>
+
+    <script>
+    const btn  = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  </script>
 
   <main class="p-8 flex-grow">
   <div class="max-w-7xl text-gray-400 mx-auto px-4 sm:px-6 lg:px-8 py-6">

@@ -19,7 +19,6 @@ class Workout(models.Model):
 class Badge(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='badges/')
     rule_type = models.CharField(max_length=100)  # e.g., 'pushup', 'bench_press'
     threshold = models.PositiveIntegerField()      # e.g., 30 reps
 

@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'aiworkout',
     'friends',
     'widget_tweaks',
-    'accounts',
 ]
 
 MIDDLEWARE = [
