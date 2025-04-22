@@ -3,6 +3,7 @@ asgiref==3.8.1
 cachetools==5.5.2
 certifi==2025.1.31
 charset-normalizer==3.4.1
+dj-database-url==2.3.0
 Django==5.0
 django-widget-tweaks @ git+https://github.com/jazzband/django-widget-tweaks.git@84db553356991686cc23046cd25234a8c70ae758
 google-ai-generativelanguage==0.6.15
@@ -14,11 +15,13 @@ google-generativeai==0.8.4
 googleapis-common-protos==1.69.2
 grpcio==1.71.0
 grpcio-status==1.71.0
+gunicorn==23.0.0
 httplib2==0.22.0
 idna==3.10
-pillow==11.2.1
+packaging==25.0
 proto-plus==1.26.1
 protobuf==5.29.4
+psycopg2-binary==2.9.10
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pydantic==2.11.2
@@ -33,3 +36,4 @@ typing-inspection==0.4.0
 typing_extensions==4.13.1
 uritemplate==4.1.1
 urllib3==2.3.0
+whitenoise==6.9.0
