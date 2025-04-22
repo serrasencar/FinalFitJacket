@@ -9,5 +9,6 @@ urlpatterns = [
     path('completed/', views.workout_completed, name='workout-completed'),
     path('log-bulk/', views.log_bulk_workout, name='log_bulk_workout'),
     path('badges/', views.badges_view, name='badges'),
+    path('leaderboard/', views.leaderboard_view, name='leaderboard'),
 
 ]

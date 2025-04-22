@@ -10,6 +10,7 @@ from django.forms import formset_factory
 from django.utils.dateparse import parse_date  # Add this import at the top if not already present
 from aiworkout.models import Workout, Badge, UserBadge
 from django.db.models import Sum
+from .leaderboard_utils import get_leaderboard_by_workouts_completed
 
 @login_required
 def badges_view(request):
@@ -262,3 +263,9 @@ def log_bulk_workout(request):
         check_and_award_badges(request.user)
         return redirect('workout_chart')    
     return redirect('aiworkout')
+
+@login_required
+def leaderboard_view(request):
+    user = request.user
+    leaderboard = get_leaderboard_by_workouts_completed(user)
+    return render(request, 'leaderboard.html', {'leaderboard': leaderboard})

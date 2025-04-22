@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard | FitJacket {% endblock %}
+{% block content %}
+
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8 text-center">Leaderboard - Compete with Your Friends</h1>
+
+  <!-- Leaderboard Section -->
+  <section class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-800">Your Rankings</h2>
+
+    {% if leaderboard %}
+      <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for entry in leaderboard %}
+          <li class="
+            rounded-xl p-5 shadow-md hover:shadow-lg transition
+            {% if entry.user__username == request.user.username %} bg-yellow-100 {% else %} bg-blue-100 {% endif %}
+          ">
+            <div class="flex items-center">
+              <div class="text-4xl font-bold {% if entry.user__username == request.user.username %} text-yellow-900 {% else %} text-blue-900 {% endif %} mr-4">
+                {{ forloop.counter }}
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold {% if entry.user__username == request.user.username %} text-yellow-900 {% else %} text-blue-900 {% endif %}">
+                  {{ entry.user__username }}
+                </h3>
+                <p class="text-sm {% if entry.user__username == request.user.username %} text-yellow-800 {% else %} text-blue-800 {% endif %}">
+                  {{ entry.total_workouts }} Workouts Completed
+                </p>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="italic text-gray-500 text-center">No one has logged any workouts yet. Start working out!</p>
+    {% endif %}
+  </section>
+</div>
+
+{% endblock %}

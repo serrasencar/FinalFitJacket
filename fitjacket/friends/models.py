@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
 class Friendship(models.Model):
     # Ensure user1 has the lower ID to avoid duplicates
