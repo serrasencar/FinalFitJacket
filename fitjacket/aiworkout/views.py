@@ -49,19 +49,18 @@ def check_and_award_badges(user):
                 UserBadge.objects.create(user=user, badge=badge)
 
 
-
 @login_required
 def aiworkout_view(request):
     workout_plan = None
     exercises = []
-  
+
     if request.method == "POST":
         user = request.user
         try:
             skill_level = user.userprofile.skill_level
             categories = user.userprofile.goals
         except AttributeError:
-            
+
             skill_level = "beginner"
             categories = ["strength", "cardio"]
 
@@ -74,7 +73,8 @@ def aiworkout_view(request):
             "Use motivating language and mention that it is personalized for the user. FitJacket hopes they enjoy it. "
             "Include at least 5 exercises with: name, sets, reps, rest time, and whether equipment is needed. "
             "Format clearly without asterisks, markdown, or bolding. Avoid extra spacing after exercise numbers. "
-            "Make it a little scientific. Follow the format below:\n\n"
+            "Make it a little scientific. For the excercise name, just have the name, DO NOT use Parenthesis with extra descriptions whatsoever."
+            " Do Not use any description like (optional) or specific measurements. Follow the format below:\n\n"
 
             "Example:\n"
             "This workout focuses on building foundational strength and improving your explosive power. "
@@ -120,7 +120,7 @@ def aiworkout_view(request):
             response = model.generate_content(prompt)
             workout_plan = response.text.replace("Exercise 1\n\n", "Exercise 1\n").strip()
             exercises = parse_exercises(workout_plan)
-           
+
         except Exception as e:
             workout_plan = "Something went wrong. Please try again."
             exercises = []
@@ -130,7 +130,6 @@ def aiworkout_view(request):
 
         print(">>> Final workout_plan:", workout_plan)
         request.session['parsed_exercises'] = exercises  # Save to session
-
 
     return render(request, "aiworkout/show.html", {
         "workout_plan": workout_plan,
