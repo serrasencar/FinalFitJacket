@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'exercises',
     'aiworkout',
     'friends',
+    'accounts',
     'widget_tweaks',
 ]
 
